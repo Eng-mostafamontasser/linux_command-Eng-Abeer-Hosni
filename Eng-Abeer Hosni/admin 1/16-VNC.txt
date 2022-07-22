@@ -1,0 +1,31 @@
+VNC (Virtual Network for Computing)
+
+[root@server ~]# yum repolist
+[root@server ~]# yum install -y tigervnc-server
+[root@server ~]# useradd vncuser
+[root@server ~]# passwd vncuser
+[root@server ~]# cd /usr/lib/systemd/system
+[root@server system]# cp vncserver@.service vncserver@\:1.service
+Note: copy the file "vncserver@\:1.service" as much logical sessions you want to create.
+[root@server system]# vim vncserver@\:1.service
+(Replace <USER> with vncuser)
+[root@server system]# systemctl deamon-reload
+[root@server system]# su - vncuser
+[vncuser@server ~]$ vncpasswd
+[vncuser@server ~]$ exit
+Note:
+This must be done before starting the vnc service.
+[root@server system]# systemctl start vncserver@\:1.service
+Note:
+Don't use #0
+[root@server system]# systemctl status vncserver@\:1.service
+[root@server system]# systemctl enable vncserver@\:1.service
+[root@server system]# setenforce 0
+[root@server system]# systemctl stop firewalld
+----------------------------------------------
+[root@client ~]# yum install -y tigervnc
+[root@client ~]# vncviewer -via vncuser@192.168.1.1 localhost:1 
+===================================================================
+
+Best wishes:
+Abeer :)

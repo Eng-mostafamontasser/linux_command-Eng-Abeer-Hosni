@@ -1,0 +1,112 @@
+Users:
+[root@master ~]# ls -l
+[root@master ~]# ps aux
+[root@master ~]# useradd --help
+[root@master ~]# useradd abeer
+[root@master ~]# passwd abeer
+[root@master ~]# useradd -G admin -u 1005 -s /usr/sbin/nologin abeer
+[root@master ~]# useradd -c "ahmed hosni" -e 2016-12-31 -s /bin/csh ahmed
+To verify: 
+[root@master ~]# id
+[root@master ~]# id abeer
+[root@master ~]# id -u abeer          (UID for abeer)
+[root@master ~]# tail -n 1 /etc/passwd
+username:password:UID:GID:GECOS:/home/dir:shell
+note:
+GECOS field is arbitrary text, which usually includes the user's real name.
+[root@master ~]# tail -n 1 /etc/shadow
+name:password:1astchange:minage:maxage:warning:inactive:expire:b1ank
+
+The number 1 indicates an MD5 hash. The number 6 appears when a SHA-512 hash is used.
+[root@master ~]# authconfig --passalgo=<descrypt|bigcrypt|md5|sha256|sha512>    (to change the hashing type)
+
+note:
+!! indicates that the user has no password
+==========================================================
+Groups:
+-Primary group is the user Private Group (UPG).
+[root@master ~]# groupadd sales
+[root@master ~]# groupadd -g 1005 admin
+
+To verify:
+[root@master ~]# id
+[root@master ~]# id abeer
+[root@master ~]# grep sales /etc/group
+groupname:password:GID:list,of,users,in,this,group
+
+[root@master ~]# groupmod -g 2000 admin
+[root@master ~]# groupadd old
+[root@master ~]# groupmod -n new old       (rename a group)
+==========================================================
+Switching users with su:
+[root@master ~]# su abeer
+[abeer@master root]$ exit
+exit
+[root@master ~]# su - abeer
+[abeer@master ~]$ 
+[abeer@master ~]$ su 
+[abeer@master ~]$ su -
+==========================================================
+Running commands as root with sudo:
+[root@master ~]# vim /etc/sudoers
+abeer   ALL=(ALL)       ALL
+%sales  ALL=(ALL)       ALL
+
+[abeer@master ~]$ sudo passwd ahmed
+[abeer@master ~]$ sudo passwd -l ahmed
+To verify:
+[root@master ~]# tail -f /var/log/secure
+==========================================================
+Modify users:
+[root@master ~]# usermod -L abeer    (lock the user)
+[root@master ~]# usermod -U abeer    (unlock the user)
+[root@master ~]# usermod -G sales abeer    (overwrite secondary group)
+[root@master ~]# usermod -aG admin abeer   (append to secondary group)
+or:
+[root@master ~]# vim /etc/group
+To verify:
+[root@master ~]# id abeer
+==========================================================
+Delete users:
+[root@master ~]# userdel abeer
+[root@master ~]# userdel -r test       (removes home directory)
+Note: 
+In RHEL7 the useradd command assigns new users the first free UID number available in the range starting from UID 1000 or above. 
+[root@master ~]#useradd abeer
+[root@master ~]# ls /home/ -l
+drwx------. 5 abeer abeer 4096 Jun 21 21:36 abeer
+[root@master ~]#userdel abeer
+[root@master ~]#useradd ahmed
+[root@master ~]# ls /home/ -l
+drwx------. 5 ahmed ahmed    74 Jun 23 05:00 abeer
+drwx------. 3 ahmed ahmed    74 Jun 23 02:55 ahmed
+==========================================================
+Delete groups:
+[root@master ~]# groupdel admin
+==========================================================
+UID ranges:
+UID 0 is always assigned to the superuser account, root.
+UID 1-200 is a range of "system users" assigned statically to system processes by Red Hat.
+UID 201-999 is a range of "system users" used by system processes that do not own files on the file system.
+UID 1000+ is the range available for assignment to regular users.
+
+To change the default:
+[root@master ~]# vim /etc/login.defs 
+==========================================================
+Password aging:
+[root@master ~]# chage -l abeer        (list info about the user)
+[root@master ~]# chage -E 2017-1-1 abeer     (expire the user on the specified address)
+[root@master ~]# chage -m 1 abeer         (set minimum number of days before password change) 
+[root@master ~]# chage -M 120 abeer       (set maximim number of days before password change)
+[root@master ~]# passwd -x 90 abeer        (the password will expire after 90 days)
+==========================================================
+Create a default file or directoy in the user's home directory:
+[root@master ~]# touch /etc/skel/new_file
+==========================================================
+GUI tool to manage users and groups:
+[root@master ~]# yum install system-config-users
+[root@master ~]# system-config-users 
+==========================================================
+
+Best wishes:
+Abeer :)

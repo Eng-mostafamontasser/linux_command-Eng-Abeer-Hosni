@@ -1,0 +1,76 @@
+Identifying File Systems and Devices:
+[root@master ~]# ls -l /dev/sda
+[root@master ~]# ls -l /dev/hda
+[root@master ~]# ls -l /dev/vda
+[root@master ~]# df -h
+[root@master ~]# du -h /etc/
+[root@master ~]# du -hs /etc/
+===================================================
+Mounting and Unmounting File Systems:
+[root@master ~]# mount /dev/cdrom /media
+[root@master ~]# blkid
+[root@master ~]# mount UUID="2015-10-30-11-11-49-00" /media
+[root@master ~]# umount /dev/cdrom
+[root@master ~]# umount /media
+[root@master ~]# lsof        (lists all opened files)
+[root@master ~]# cd /media/
+[root@master media]# lsof /media/
+
+Notes:
+- We can't umount a busy file system.
+- Removable media, get automatically mounted under /run/media/<user>/<label> 
+- Removing a USB storage device without unmounting the file system on it can result in data loss.
+===================================================
+Making Links Between Files:
+[root@master ~]# ln file.txt /demo.txt             (creates a hard link)
+[root@master ~]# ls -li file.txt /demo.txt         (the same inode number)
+
+[root@master ~]# ln -s /root/file.txt /home/             (creates a soft or symbolic link) 
+[root@master ~]# ln -s /root/file.txt /home/new.txt    
+[root@master ~]# ls -li file.txt /home/file.txt    (diffrent inode numbers)
+[root@master ~]# file /home/file.txt
+[root@master ~]# ln -s /etc/ /root/                (creates a symbolic link for a directory)
+
+Notes:
+- After a new hard link is created, there is no way to tell which of the existing hard links is the original one.
+- All hard links referencing the same file have the same permissions, link count, user/group ownerships, time stamps, and file content. If any of that information is changed on one hard link, all other hard links pointing at the same file will show the new information as well.
+- hard link is not allowed for a directory.
+- In RHEL7, a normal user can create a hard link to files that he has permissions on.
+- Hard links must exist on the same file system.
+- A symbolic link can point to a file on a different file system.
+- When creating the symbolic link, the full path should be used.
+===================================================
+Locating Files on the System:
+[root@master ~]# locate passwd
+[root@master ~]# locate -i messages                (case-insensitive search)
+[root@master ~]# locate -n 5 passwd                (the first five matches)
+[root@master ~]# locate passwd | grep -i passwd
+[root@master ~]# updatedb                          (the default is 1 day)
+
+[root@master ~]# find / -name passwd
+[root@master ~]# find / -name *.txt
+[root@master ~]# find / -iname messages            (case-insensitive search)
+[root@master ~]# find / -user abeer                (Search for files owned by the user abeer)
+[root@master ~]# find / -group sales               (Search for files owned by the group sales)
+[root@master ~]# find / -uid 1000                  (Search for files owned by the UID 1000)
+[root@master ~]# find / -gid 1000                  (Search for files owned by the GID 1000)
+[root@master ~]# find /home -perm 764              (exact match of permissions)
+[root@master ~]# find /home -perm -624             (at least these permissions)
+[root@master ~]# find /home -perm /442             (logical OR)
+[root@master ~]# find /home -size 3M               (exact size)
+[root@master ~]# find /home -size -3M              (less than 3 mega)
+[root@master ~]# find /home -size +3M              (more than 3 mega)
+[root@master ~]# find /home -mmin 120              (exact modification time)
+[root@master ~]# find /home -mmin -120             (less than 120 min)
+[root@master ~]# find /home -mmin +120             (more than 120 min)
+[root@master ~]# find /home -type d                (searche for directories)
+[root@master ~]# find /home -type f                (searche for files)
+[root@master ~]# find /home -type l                (searche for symbolic links)
+[root@master ~]# find /home -type b                (searche for block devices)
+
+[root@master ~]# find /home -name file.txt -exec mv {} /tmp \;        (non-interactive)
+[root@master ~]# find /home -name file.txt -ok rm -f {} \;            (interactive)
+[root@master ~]# find / -group sales -exec chgrp sales {} \;
+Notes:
+- The user invoking the find command must have read and execute permission on a directory to examine its contents.
+- If the directory argument is omitted, find will start the search in the current directory and look for matches in any of the subdirectories.

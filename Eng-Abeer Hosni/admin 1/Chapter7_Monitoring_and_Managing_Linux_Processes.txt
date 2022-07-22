@@ -1,0 +1,125 @@
+What is a process?
+- A process is a program which is being executed
+- Any process may create a child process. All processes are descendants of the first system process, which is systemd on a RHEL7 system.
+[root@master ~]# echo $$   (To see the PID of your current shell process)
+4085
+[root@master ~]# bash
+[root@master ~]# echo $$
+8686
+[root@master ~]# exit
+exit
+[root@master ~]# echo $$
+4085
+
+===============================================================================
+Listing processes:
+[root@master ~]# ps
+[root@master ~]# ps aux
+[root@master ~]# ps -aux
+[root@master ~]# ps -aux | less
+[root@master ~]# ps aux | grep -i syslogd
+[root@master ~]# ls /proc/
+[root@master ~]# ps aux | grep 264    (which shown in /proc)
+[root@master ~]# pidof vim        or [root@master ~]# pgrep vim
+[root@master ~]# ps -l                (To display Parent PID PPID)
+[root@master ~]# ps -ef               (To display Parent PID PPID and nice values)
+
+a.... all processes attached to a terminal
+u.... provides more columns
+x.... all other processes
+
+[root@master ~]# pstree         (process status tree)
+OR
+[root@master ~]# ps fax         (process status tree)
+[root@master ~]# pstree -p      (Display PID of each process)
+
+- Processes in brackets (usually at the top) are scheduled kernel threads.
+===============================================================================
+Real-time process monitoring:
+[root@master ~]# uptime
+[root@master ~]# grep "model name" /proc/cpuinfo  (to know nu of CPUs)
+[root@master ~]# top
+
+type 1 to show all cpu cores
+type s to change the default refresh rate which is 3 seconds
+type h for help
+type k to kill a process
+type r to renice a process
+type M to change the display to sort by the amount of memory
+type P to change the display to sort by the CPU utilization
+type n to change the number of processes shown
+type w to save current display configuration
+type q to quit
+
+PID      ...  The process ID
+USER     ...  The process owner
+VIRT     ...  (Virtual memory) All memory the process is using including swap
+RES      ...  (Resident memory) The physical memory used by the process
+TIME     ...  CPU time, the total processing time since the process started
+===============================================================================
+GUI tools to manage processes:
+[root@master ~]# gnome-system-monitor 
+OR)
+Applications.. System Tools.. System Monitor 
+===============================================================================
+Controlling Jobs:
+- Background processes display a question mark (?) in the TTY column in a ps aux command.
+
+[root@master ~]# dd if=/dev/zero of=/dev/null
+[root@master ~]# sleep 100000 &               (Running a job in the background)
+[1] 5151
+
+[root@master ~]# jobs
+[1]+  Running       sleep 100000 &
+
+[root@master ~]# fg %1
+sleep 100000
+
+^Z                                    (To resend to the background)
+[1]+  Stopped       sleep 100000
+
+[root@master ~]# bg %1                (To restart the process in the background)              
+[1]+ sleep 100000 &
+
+OR
+[root@master ~]# bg 5151
+
+^C                                    (End the process)
+===============================================================================
+Killing Processes:
+[root@master ~]# kill -l          (List all signals)
+[root@master ~]# man 7 signal
+
+1)SIGHUP   Causes the process to re-read the configuration file
+9)SIGKILL  Should be used with caution
+15)SIGTERM  The default
+
+[root@master ~]# pidof vim
+4123
+[root@master ~]# kill 4123         (Default is SIGTERM 15)
+
+[root@master ~]# pidof vim
+7073
+[root@master ~]# kill -9 7073
+[root@master ~]# kill -SIGKILL 7073
+
+[root@master ~]# pkill vim        (Default is SIGTERM 15)
+[root@master ~]# killall vim
+===============================================================================
+Managing Process Priorities:
+- Processes are scheduled according to priority.
+- negative values are allowed only to root.
+
+[root@master ~]# ps l       (To show nice values)
+
+-The nice command is used to start a process with a user defined priority.
+[root@master ~]# nice vim text &          (Default is 10)
+[1] 9182
+
+[root@master ~]# nice -n 15 vim text &
+
+-The renice command is used to change the priority of a currently running process.
+[root@master ~]# renice 19 9182        (19 is the new value)
+===============================================================================
+Best wishes
+Abeer :)

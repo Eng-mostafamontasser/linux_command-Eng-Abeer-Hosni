@@ -1,0 +1,31 @@
+KVM (Kernel-based Virtual Machine):
+[root@master ~]# cat /proc/cpuinfo 
+vmx............ for intel based processor
+svm............ for AMD based processor
+[root@master ~]# lsmod | grep kvm         (to check if the kvm module is available)
+[root@master ~]# systemctl status libvirtd
+[root@master ~]# ip link show
+virbr0......... virtual bridge (embeded switch)
+[root@master ~]# arch
+x86_64......... to support virtualization, you need a 64 bit kernel
+==============================================================
+Virtual manager (GUI tool):
+[root@master ~]# yum  -y install kvm libvirt virt-manager qemu-kvm
+[root@master ~]# virt-manager 
+Or)
+Applications> System Tools> Virtual Machine Manager
+
+[root@master ~]# dd if=/dev/cdrom of=/root/RHEL7.iso      (create an ios file)
+==============================================================
+Virsh (CLI tool):
+[root@master ~]# virsh 
+virsh # help
+virsh # exit
+[root@master ~]# virsh list              (list all running virtual machines)
+[root@master ~]# virsh list --all        (list all virtual machines)
+[root@master ~]# virsh destroy rhel7.1   (stop the machine named rhel7.1)
+[root@master ~]# virsh start rhel7.1     (start the machine named rhel7.1) 
+==============================================================
+
+Best wishes:
+Abeer :)  

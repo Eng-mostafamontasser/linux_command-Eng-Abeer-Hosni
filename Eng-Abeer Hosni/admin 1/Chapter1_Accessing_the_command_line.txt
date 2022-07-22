@@ -1,0 +1,94 @@
+Virtual consoles:
+Alt+Ctrl+Fn
+Alt+Fn    (CLI only)
+Alt+ -> or -<
+[root@master Desktop]# chvt 6      (where 6 is the tty number)
+[root@master Desktop]# tty
+/dev/pts/0                  (Pesudo terminal screen)
+[root@master Desktop]# tty
+/dev/tty2                   (Tele type terminal)
+To use mouse in TTY envirnment, install the GPM package:
+[root@master ~]# yum install gpm
+[root@master ~]# systemctl start gpm
+==============================================
+Shell basics:
+[root@master ~]#clear              (or Ctrl+l)
+[root@master ~]#reset
+[root@master ~]#ls
+[root@master ~]#ls -l
+[root@master ~]#ls --all
+[root@master ~]#ls -a
+[root@master ~]#ls -la 
+[root@master ~]#ls -la /home
+[root@master ~]#exit             (or Ctrl+d)
+
+[root@master ~]#date --help
+Usage: date [OPTION]... [+FORMAT]
+  or:  date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+[ ] surround optional items
+... represents an arbitrary-length list of items of that type
+| means only one of them can be specified
+<> represents variable data. For example <filename> 
+==============================================
+The GNOME desktop environment:(GNOME v3)
+The default is "GNOME Classic", similar to GNOME 2
+"Modern GNOME 3" is also avilable
+GNOME help:
+1- F1
+2- Applications> Documentation> Help
+3- [root@master ~]#yelp
+==============================================
+Examples of simple commands:
+[root@master ~]#date 
+[root@master ~]#cal
+[root@master ~]#cal 2016
+[root@master ~]#cal 3
+[root@master ~]#cal 3 2016
+[root@master ~]#date +%R
+[root@master ~]#date +%x
+[root@master ~]#passwd
+[root@master ~]#passwd abeer
+[root@master ~]#file /etc/passwd
+[root@master ~]#file /home
+[root@master ~]#which passwd
+[root@master ~]#file /bin/passwd
+[root@master Desktop]# head /etc/passwd
+[root@master Desktop]# head -n 3 /etc/passwd
+[root@master Desktop]# head -3 /etc/passwd
+[root@master Desktop]# head /etc/passwd -n 3
+[root@master Desktop]# tail /etc/passwd
+[root@master Desktop]# tail -n 3 /etc/passwd
+[root@master Desktop]# tail -3 /etc/passwd
+[root@master Desktop]# tail /etc/passwd -n 3
+[root@master Desktop]# wc /etc/passwd
+[root@master Desktop]# wc -lwc /etc/passwd
+[root@master Desktop]# wc -l /etc/passwd
+==============================================
+Tab completion:
+[root@master Desktop]# pas   <TAB>
+passwd       paste        pasuspender
+[root@master Desktop]# pass   <TAB>
+[root@master Desktop]# passwd
+[root@master Desktop]# ls /etc/pas    <TAB>
+[root@master Desktop]# useradd --     <TAB>
+==============================================
+Command history:
+[root@master ~]# cat .bash_history 
+[root@master ~]# history
+[root@master ~]# !88
+[root@master ~]# !-10
+[root@master ~]# !ls       (the most recent command)
+[root@master ~]# !!
+[root@master ~]# history -c           (to clear the history)
+Note: new command are loaded into buffer and shown in the history command when we exit the shell
+==============================================
+Ctrl+a     Jump to the beginning of the command line.
+Ctrl+e     Jump to the end of the command line.
+[root@master ~]#ls ; date ; cal
+[root@master ~]#ls && date         (logical AND)
+[root@master ~]#ls /div || date    (logical OR)
+[root@master ~]#ls /etc/passwd
+[root@master ~]#head <ESC>.       (to use the last argument)
+==============================================
+best wishes:
+Abeer :)

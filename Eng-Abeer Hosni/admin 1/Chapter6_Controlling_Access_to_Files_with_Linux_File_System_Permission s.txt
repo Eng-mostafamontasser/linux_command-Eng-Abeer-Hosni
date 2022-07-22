@@ -1,0 +1,79 @@
+Linux file system permissions:
+- User permissions override group permissions, which override other permissions.
+- If a user only has read access on a directory, the names of the files in it can be listed, but no other information, including permissions or time stamps, are available, nor can they be accessed.
+- If a user only has exec access on a directory, they can not list the names of the files in the directory, but if they already know the name of a file which they have permission to read, then they can access the contents of that file by explicitly specifying the file name. 
+- All permissions in Linux are set directly on each file or directory (not inherited)
+- The write permission implies the ability to delete files and subdirectories.
+- If write and the sticky bit are both set on a directory, then only the user that owns a file or subdirectory in the directory may delete it. 
+- Only the root and the owner can change the permissions.
+[root@master ~]# ls -l file       OR   [root@master ~]# ll file 
+[root@master ~]# ls -ld /home
+==========================================================
+Changing file/directory permissions:
+1- Symbolic method:
+• Who is u, g, o, a (for user, group, other, all)
+• What is +, -, = (for add, remove, set exactly)
+• Which is r, w, x (for read, write, executable)
+
+[root@master ~]# chmod g+w file1
+[root@master ~]# chmod o+w file1
+[root@master ~]# chmod u-w file1
+[root@master ~]# chmod u+w,g+wx,o+r file1
+[root@master ~]# chmod go-rw file1
+[root@master ~]# chmod u=rw,g=r,o=r file1            (resets all old permissions)
+[root@master ~]# chmod a+x file1             or  chmod ugo+x file1     
+[root@master ~]# chmod a=rw file1            or  chmod ugo=rw file1    
+[root@master ~]# chmod u= file1              (reomves all permissions from owner)
+[root@master ~]# chmod +rw file1             or  chmod u+rw file1
+[root@master ~]# chmod =rw file1             or  chmod u=rw file1
+[root@master ~]# chmod -R g+rwx dir1
+
+2- Numeric method:
+r=4, w=2, x=1
+
+[root@master ~]# chmod 754 file1             (rwx,r-x,r--)
+[root@master ~]# chmod 400 file1             (r--,---,---)
+[root@master ~]# chmod -R 755 dir1
+==========================================================
+Changing file/directory user or group ownership:
+- Only root can change the ownership of a file.
+- Root or the file's owner can change group ownership.
+[root@master ~]# chown abeer file1
+[root@master ~]# chown abeer dir1
+[root@master ~]# chown -R abeer dir1
+[root@master ~]# chown :sales file1               (change the group ownership)
+[root@master ~]# chgrp sales file1                (change the group ownership) 
+[root@master ~]# chown abeer:sales file1          (change the owner and group)
+[root@master ~]# chown -R abeer:sales dir1
+==========================================================
+Special permissions:
+- The setuid (or setgid) permission on an executable file means that the command will run as the user (or group) of the file, not as the user that ran the command.
+[root@master ~]# ls -l /usr/bin/passwd
+
+-The sticky bit for a directory sets a special restriction on deletion of files. Only the owner of the
+file (and root) can delete files within the directory. 
+[root@master ~]# ls -ld /tmp/
+
+• Symbolically: setuid=u+s; setgid=g+s; sticky=o+t
+• Numerically (fourth preceding digit): setuid=4; setgid=2; sticky=1 
+
+[root@master ~]# chown g+s dir1
+[root@master ~]# chown 2770 dir1
+==========================================================
+Default file permissions:
+- The default permissions for files are set by the processes that create them. For example, text editors create files so they are readable and writeable, but not executable, by everyone.
+- Every process on the system has a umask. 
+
+[root@master ~]# umask
+0022
+[abeer@master ~]$ umask
+0002
+[root@master ~]# umask 007       (not permanent)
+[root@master ~]# vim /etc/bashrc 
+[root@master ~]# vim /etc/profile
+[root@master ~]# vim .bashrc
+[root@master ~]# vim .bash_profile 
+==========================================================
+
+Best wishes
+Abeer :)

@@ -1,0 +1,45 @@
+[root@server ~]# systemctl status sshd
+[root@server ~]# rpm -qa | grep -i ssh
+Or)
+[root@server ~]# yum search sshd
+[abeer@client ~]$ ssh-keygen                 (Default is RSA)
+[abeer@client ~]$ ssh-keygen -t dsa
+[abeer@client ~]$ ssh-keygen -t rsa
+[abeer@client ~]$ cd .ssh/
+[abeer@client ~]$ ssh 192.168.1.10
+[abeer@client ~]$ ssh abeer@192.168.1.10
+[abeer@client ~]$ ssh abeer@192.168.1.10 hostname
+[abeer@client ~]$ exit                   (exit from the SSH session)
+[root@server ~]# w
+[root@server ~]# who
+
+Note)
+- The first time a user uses ssh to connect to a particular server, the ssh command stores the server's public key in the user's ~/.ssh/known_hosts file. Every time the user connects after that, the client makes sure it gets the same public key from the server by comparing the server's entry in the ~/.ssh/known_hosts file to the public key the server sent. If the keys do not match, the client assumes that the network traffic is being hijacked or that the server has been compromised, and breaks the connection.
+- Host keys are stored in /etc/ssh/ssh_host_key * on the SSH server.
+===================================================================
+SSH key-based authentication:
+[abeer@client ~]$ ssh-copy-id 192.168.1.1
+[abeer@client ~]$ ssh-copy-id abeer@192.168.1.1
+[abeer@client ~]$ ssh-copy-id -p 2020 abeer@192.168.1.1
+[abeer@client ~]$ ssh-copy-id -i ~/ssh/id_rsa.pub abeer@192.168.1.1
+
+- In the event the private key is stolen, it is very difficult for someone other than the issuer to use it when protected with a passphrase.
+- When the key is copied to another system using ssh-copy-id, it copies the ~/.ssh/id_rsa.pub file by default. 
+
+[root@server ~]# cd /home/abeer/.ssh/
+authorized_keys
+
+[root@server ~]# ps aux | grep -i ssh
+[root@server ~]# kill 8619
+===================================================================
+Customizing SSH Service Configuration:
+[root@server ~]# vim /etc/ssh/sshd_config 
+#Port 22                        (Changes the default port)
+#PermitRootLogin yes            (Prohibit the root user from logging in using SSH)
+PasswordAuthentication yes      (Prohibit password authentication using SSH)
+
+[abeer@client ~]$ ssh root@192.168.1.1 -p 2200
+===================================================================
+
+Best wishes:
+Abeer :)

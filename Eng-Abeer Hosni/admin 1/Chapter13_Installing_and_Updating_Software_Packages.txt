@@ -1,0 +1,95 @@
+Red Hat Subscription Management:
+[root@master ~]# subscription-manager-gui 
+Or)
+Applications > System Tools > Red Hat Subscription Manager
+
+[root@master ~]# subscription-manager register --username=abeer --password=123
+==============================================================
+Software packages and RPM:
+Ex:
+httpd-tools-2.4.6-7.el7.x86_64.rpm
+httpd-tools....Name
+2.4.6..........Version
+7.el7..........Release
+x86_64.........ARCH
+
+[root@master ~]# uname -a
+[root@master ~]# uname -r
+[root@master ~]# arch
+[root@master ~]# cat /etc/redhat-release 
+
+[root@master Packages]# rpm -ivh vsftpd-3.0.2-10.el7.x86_64.rpm     (Install a package)
+[root@master Packages]# rpm -qa | grep -i ftp
+[root@master Packages]# rpm -e vsftpd 
+[root@master Packages]# rpm -Fvh vsftpd-3.0.2-10.el7.x86_64.rpm     (Update an installed package)
+[root@master Packages]# rpm -Uvh vsftpd-3.0.2-10.el7.x86_64.rpm     (Update and install a package)
+[root@master Packages]# rpm -ql vsftpd                              (Query an installed package)
+[root@master Packages]# rpm -qpl vsftpd-3.0.2-10.el7.x86_64.rpm     (Query a not-installed package)
+[root@master Packages]# rpm -qi vsftpd                              (Query info of an installed package)
+[root@master Packages]# rpm -qpi vsftpd-3.0.2-10.el7.x86_64.rpm     (Query info of a not-installed package)
+[root@master Packages]# rpm -qc vsftpd                              (Query config files of an installed package)
+[root@master Packages]# rpm -qpc vsftpd-3.0.2-10.el7.x86_64.rpm     (Query config files of a not-installed package)
+[root@master Packages]# rpm -qd vsftpd                  (Query doc files of an installed package)
+[root@master Packages]# rpm -qpd vsftpd-3.0.2-10.el7.x86_64.rpm  (Query doc files of a not-installed package)
+[root@master Packages]# which passwd
+/usr/bin/passwd
+[root@master Packages]# rpm -qf /usr/bin/passwd
+passwd-0.79-4.el7.x86_64
+
+[root@master Packages]# rpm -ivh --prefix=/home/dir/ vsftpd-3.0.2-10.el7.x86_64.rpm
+error: package vsftpd is not relocatable        (Change the defualt installation directory)
+
+[root@master Packages]# rpm -K vsftpd-3.0.2-10.el7.x86_64.rpm    (Check if the package is signed from RED HAT or not)
+[root@master Packages]# rpm --import /media/RPM-GPG-KEY-redhat-*   (import the keys)
+==============================================================
+Yellowdog Updater, Modified (yum):
+1- Local Repo:
+[root@master ~]# vim /etc/yum.repos.d/local.repo 
+[LocalRepo]
+name = Local
+baseurl = file:///run/media/root/RHEL-7.2\ Server.x86_64
+enabled = 1
+gpgcheck = 0
+
+2- Remote Repo:
+[root@master ~]# rpm -ivh /media/Packages/vsftpd-3.0.2-10.el7.x86_64.rpm 
+[root@master ~]# systemctl start vsftpd
+[root@master ~]# systemctl enable vsftpd
+[root@master ~]# setenforce 0
+[root@master ~]# vim /etc/yum.repos.d/server1.repo 
+[Server1]
+name = Server1
+baseurl = ftp://192.168.1.10/pub
+enable = 1
+gpg = 0
+
+[root@master ~]# yum install system-config-kickstart
+[root@master ~]# yum remove system-config-kickstart
+[root@master ~]# yum remove -y system-config-kickstart
+[root@master ~]# yum search system-config-kickstart
+[root@master ~]# yum search all system-config-kickstart
+[root@master ~]# yum info system-config-kickstart
+[root@master ~]# yum update system-config-kickstart
+[root@master ~]# yum update               (install all updates)
+
+Note:
+If we want to enable GPG chech:
+gpg = 0
+gpgkey = file:////etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
+Note:
+yum remove will remove the package(s) listed and any package that requires the packages being removed
+==============================================================
+[root@master ~]# yum repolist          (List all repo files)
+[root@master ~]# yum list all          (List all available packages)
+[root@master ~]# yum list installed    (List all installed packages)
+[root@master ~]# yum whatprovides */selinux
+[root@master ~]# yum provides */selinux
+[root@master ~]# yum remove bash
+[root@master ~]# yum list kernel         (List all kernels)
+[root@master ~]# tail -f /var/log/yum.log 
+[root@master ~]# yum history 
+[root@master ~]# yum history undo 3               (Reverse action number 3)
+==============================================================
+Best wishes:
+Abeer :)

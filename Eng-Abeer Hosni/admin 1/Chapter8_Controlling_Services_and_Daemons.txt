@@ -1,0 +1,51 @@
+systemd:
+- System startup and server processes are managed by the systemd.
+- For many years, process ID 1 of Linux and UNIX systems has been the init process. Frequently used daemons were started on systems at boot time with SystemV and LSB init scripts. Less frequently used daemons were started on demand by another service, such as initd or xinetd, which listens for client connections. 
+=============================================================
+Listing unit files with systemctl:
+[root@master ~]# systemctl
+[root@master ~]# systemctl -t help    (Query the state of all units )
+[root@master ~]# systemctl --type service          (Query the state of only the service units)
+OR)
+[root@master ~]# systemctl list-units --type service   (List all active services)
+[root@master ~]# systemctl list-units --type service --all   (List all active and inactive services)
+[root@master ~]# systemctl --failed --type=service           (List failed services)
+
+[root@master ~]# systemctl status sshd.service
+[root@master ~]# systemctl status sshd
+[root@master ~]# systemctl status firewalld.service
+[root@master ~]# systemctl status firewalld
+[root@master ~]# systemctl status firewalld -l
+[root@master ~]# systemctl is-active sshd
+[root@master ~]# systemctl is-enabled sshd
+=============================================================
+Controlling System Services:
+[root@master ~]# systemctl status sshd
+[root@master ~]# systemctl restart sshd
+[root@master ~]# systemctl stop sshd
+[root@master ~]# systemctl start sshd
+[root@master ~]# systemctl reload sshd         (Re-read the configuration file)
+=============================================================
+Unit dependencies:
+[root@master ~]# systemctl stop cups
+Warning: Stopping cups.service, but it can still be activated by:
+  cups.socket
+  cups.path
+
+[root@master ~]# systemctl list-dependencies cups
+[root@master ~]# systemctl list-dependencies cups --reverse 
+=============================================================
+Masking services:
+A masked service can not be started manually or automatically
+network vs NetworkManager 
+iptables vs firewalld
+[root@master ~]# systemctl mask network
+[root@master ~]# systemctl unmask network
+=============================================================
+Enabling system daemons to start or stop at boot:
+[root@master ~]# systemctl enable sshd
+[root@master ~]# systemctl disable sshd
+=============================================================
+
+Best wishes
+Abeer :)

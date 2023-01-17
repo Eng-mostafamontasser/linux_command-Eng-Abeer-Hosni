@@ -41,5 +41,7 @@ PasswordAuthentication yes      (Prohibit password authentication using SSH)
 [abeer@client ~]$ ssh root@192.168.1.1 -p 2200
 ===================================================================
 
+authorized_keys
+
 Best wishes:
 Abeer :)
